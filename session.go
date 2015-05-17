@@ -118,6 +118,9 @@ func (s *session) handleAUTH(cmd command) error {
 	if !s.gotHelo {
 		return ErrNoHelo
 	}
+	if len(cmd.fields) < 2 {
+		return ErrInvalidSyntax
+	}
 	mechanism := strings.ToUpper(cmd.fields[1])
 	action, exists := authMap[mechanism]
 	if !exists {
@@ -156,6 +159,9 @@ func (s *session) handleDATA(cmd command) error {
 }
 
 func (s *session) handleEHLO(cmd command) error {
+	if len(cmd.fields) < 2 {
+		return ErrInvalidSyntax
+	}
 	s.mHandler = nil // reset message in case of duplicate HELO
 	if err := s.sHandler.HandleHELO(cmd.fields[1], true); err != nil {
 		return err
@@ -174,6 +180,9 @@ func (s *session) handleEHLO(cmd command) error {
 }
 
 func (s *session) handleHELO(cmd command) error {
+	if len(cmd.fields) < 2 {
+		return ErrInvalidSyntax
+	}
 	s.mHandler = nil // reset message in case of duplicate HELO
 	if err := s.sHandler.HandleHELO(cmd.fields[1], false); err != nil {
 		return err
