@@ -72,6 +72,8 @@ func (s *session) serve() {
 	for {
 		if s.keepGoing {
 			s.serveOne()
+		} else {
+			return
 		}
 	}
 }
