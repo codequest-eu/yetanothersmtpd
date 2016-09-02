@@ -194,6 +194,9 @@ func (s *session) handleHELO(cmd command) error {
 }
 
 func (s *session) handleMAIL(cmd command) error {
+	if len(cmd.fields) < 2 {
+		return ErrInvalidSyntax
+	}
 	if !s.gotHelo {
 		return ErrNoHelo
 	}
